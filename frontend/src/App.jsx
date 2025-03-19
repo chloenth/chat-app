@@ -1,14 +1,23 @@
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
+import SignUpPage from './pages/SignUpPage';
+import LoginPage from './pages/LoginPage';
+import SettingsPage from './pages/SettingsPage';
+import ProfilePage from './pages/ProfilePage';
+
 const App = () => {
   return (
-    <div className='text-red-500 p-4' data-theme='dark'>
-      <button className='btn btn-neutral'>Neutral</button>
-      <button className='btn btn-primary'>Primary</button>
-      <button className='btn btn-secondary'>Secondary</button>
-      <button className='btn btn-accent'>Accent</button>
-      <button className='btn btn-info'>Info</button>
-      <button className='btn btn-success'>Success</button>
-      <button className='btn btn-warning'>Warning</button>
-      <button className='btn btn-error'>Error</button>
+    <div>
+      <Navbar />
+
+      <Routes>
+        <Route path='/' element={<HomePage />}></Route>
+        <Route path='/signup' element={<SignUpPage />}></Route>
+        <Route path='/login' element={<LoginPage />}></Route>
+        <Route path='/settings' element={<SettingsPage />}></Route>
+        <Route path='/profile' element={<ProfilePage />}></Route>
+      </Routes>
     </div>
   );
 };
