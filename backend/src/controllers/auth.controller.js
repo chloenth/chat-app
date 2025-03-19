@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import { generateToken } from '../lib/utils.js';
 
+// sign up
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
 
@@ -65,10 +66,51 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = (req, res) => {
-  res.send('login route');
+// login
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    // generate token and attach it in cookie
+    generateToken(user._id, res);
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      avatar: user.avatar,
+    });
+  } catch (error) {
+    console.error('Error in login controller: ', error.message);
+    res
+      .status(500)
+      .json({ message: `Internal Server Error: ${error.message}` });
+  }
 };
 
+// logout
 export const logout = (req, res) => {
-  res.send('logout route');
+  try {
+    res.cookie('jwt', '', {
+      maxAge: 0,
+    });
+
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.error('Error in logout controller: ', error.message);
+    res
+      .status(500)
+      .json({ message: `Internal Server Error: ${error.message}` });
+  }
 };
