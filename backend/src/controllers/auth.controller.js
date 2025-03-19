@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import { generateToken } from '../lib/utils.js';
+import cloudinary from '../lib/cloudinary.js';
 
 // sign up
 export const signup = async (req, res) => {
@@ -109,6 +110,34 @@ export const logout = (req, res) => {
     res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     console.error('Error in logout controller: ', error.message);
+    res
+      .status(500)
+      .json({ message: `Internal Server Error: ${error.message}` });
+  }
+};
+
+// update profile
+export const updateProfile = async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    const userId = req.user._id;
+
+    if (!avatar) {
+      return res.status(400).json({ message: 'Avatar is required' });
+    }
+
+    const uploadResponse = await cloudinary.uploader.upload(avatar);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        avatar: uploadResponse.secure_url,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error('Error in update profile controller: ', error.message);
     res
       .status(500)
       .json({ message: `Internal Server Error: ${error.message}` });
