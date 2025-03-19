@@ -4,16 +4,22 @@ const UserSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
+      validate: {
+        validator: function (value) {
+          return value.trim().length > 0; // Ensures it's not an empty string
+        },
+        message: 'Email cannot be empty',
+      },
     },
     fullName: {
       type: String,
-      require: true,
+      required: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
       minlength: 6,
     },
     avatar: {
