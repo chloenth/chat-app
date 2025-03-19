@@ -143,3 +143,15 @@ export const updateProfile = async (req, res) => {
       .json({ message: `Internal Server Error: ${error.message}` });
   }
 };
+
+// check auth
+export const checkAuth = (req, res) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.error('Error in checkAuth controller: ', error.message);
+    res
+      .status(500)
+      .json({ message: `Internal Server Error: ${error.message}` });
+  }
+};
