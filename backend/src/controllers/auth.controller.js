@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+
 import User from '../models/user.model.js';
 import { generateToken } from '../lib/utils.js';
 import cloudinary from '../lib/cloudinary.js';
@@ -119,14 +120,19 @@ export const logout = (req, res) => {
 // update profile
 export const updateProfile = async (req, res) => {
   try {
-    const { avatar } = req.body;
+    // const { avatar } = req.body;
     const userId = req.user._id;
 
-    if (!avatar) {
+    // Check if a file is uploaded
+    if (!req.file) {
       return res.status(400).json({ message: 'Avatar is required' });
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(avatar);
+    // Upload file to Cloudinary
+    const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'chatApp-avatars',
+    });
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
