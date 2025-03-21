@@ -133,20 +133,41 @@ export const updateProfile = async (req, res) => {
       folder: 'chatApp-avatars',
     });
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        avatar: uploadResponse.secure_url,
-      },
-      { new: true }
-    );
+    const user = await User.findById(userId);
+    if (user && user.avatar) {
+      deleteImage(user.avatar);
+    }
 
-    res.status(200).json(updatedUser);
+    user.avatar = uploadResponse.secure_url;
+    await user.save();
+
+    res.status(200).json(user);
   } catch (error) {
     console.error('Error in update profile controller: ', error.message);
     res
       .status(500)
       .json({ message: `Internal Server Error: ${error.message}` });
+  }
+};
+
+// delete image from cloudinary
+const deleteImage = async (imageUrl) => {
+  if (!imageUrl) return;
+
+  try {
+    // Extract public ID from the URL
+    const parts = imageUrl.split('/');
+    const publicIdWithExtension = parts.slice(-2).join('/'); // folder/filename.jpg
+    const publicId = publicIdWithExtension.split('.')[0]; // Remove file extension
+
+    // Delete the image from Cloudinary
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    console.log('Delete result:', result);
+    return result;
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    return null;
   }
 };
 

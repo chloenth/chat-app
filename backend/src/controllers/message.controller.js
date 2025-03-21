@@ -40,14 +40,20 @@ export const getMessages = async (req, res) => {
 // send Message
 export const sendMessage = async (req, res) => {
   try {
-    const { text, image } = req.body;
-    const { id: receiverId } = req.params.id;
+    const { text } = req.body;
+    const image = req.file;
+    const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
     let imageUrl;
     if (image) {
-      const uploadResponse = await cloudinary.uploader.upload(image);
+      console.log('image available');
+      const uploadResponse = await cloudinary.uploader.upload(image.path, {
+        folder: 'chatApp-imageMessages',
+      });
       imageUrl = uploadResponse.secure_url;
+
+      console.log('imageUrl upload successfully: ', imageUrl);
     }
 
     const newMessage = new Message({
