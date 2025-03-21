@@ -9,6 +9,10 @@ const io = new Server(server, {
   cors: ['http://localhost:5173'],
 });
 
+export function getReceiverSocketId(userId) {
+  return userSocketMap[userId];
+}
+
 // used to store online users
 const userSocketMap = {}; // userId: socketId
 
