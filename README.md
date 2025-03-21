@@ -54,15 +54,13 @@ A real-time chat application built using React for the frontend and Node.js with
 **Configure environment variables**:
 Create a .env file in the backend folder:
 
-```sh
-    PORT=5001
-    MONGO_URI=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret
-    CLOUDINARY_CLOUD_NAME=your_cloud_name
-    CLOUDINARY_API_KEY=your_api_key
-    CLOUDINARY_API_SECRET=your_api_secret
-    COOKIE_SECRET=your_cookie_secret
-```
+**PORT**=_5001_
+**MONGO_URI**=_your_mongodb_connection_string_
+**JWT_SECRET**=_your_jwt_secret_
+**CLOUDINARY_CLOUD_NAME**=_your_cloud_name_
+**CLOUDINARY_API_KEY**=_your_api_key_
+**CLOUDINARY_API_SECRET**=_your_api_secret_
+**NODE_ENV**=_development_
 
 Start the backend server:
 
