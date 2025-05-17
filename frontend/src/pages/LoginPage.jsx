@@ -87,6 +87,10 @@ const LoginPage = () => {
                   )}
                 </button>
               </div>
+              <p className='text-sm opacity-50'>
+                Password must include at least one uppercase letter, one
+                lowercase letter, one number, and one special character
+              </p>
             </div>
 
             <button
@@ -111,6 +115,34 @@ const LoginPage = () => {
               <Link to='/signup' className='link link-primary'>
                 Create account
               </Link>
+            </p>
+          </div>
+
+          <div className='opacity-75'>
+            <div className='mb-4 font-medium'>Sign in as Demo Users:</div>
+
+            <div className='flex justify-between'>
+              <div>
+                <div className='font-medium mb-2'>User 1: </div>
+                <div className='italic'>Email: jamie@gmail.com</div>
+                <div className='italic'>Password: Jamie1@</div>
+              </div>
+
+              <div>
+                <div className='font-medium mb-2'>User 2: </div>
+                <div className='italic'>Email: ella@gmail.com</div>
+                <div className='italic'>Password: Ella1@</div>
+              </div>
+            </div>
+
+            {/* <div className='h-[1px] bg-yellow-500 my-6 w-50'></div> */}
+
+            <p className='mt-10 italic'>
+              You can register new accounts or use demo accounts.
+            </p>
+            <p className='mt-2 italic'>
+              To simulate a chat, try logging in as different users in multiple
+              browser tabs.
             </p>
           </div>
         </div>
